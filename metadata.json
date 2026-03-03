@@ -1,0 +1,8 @@
+{
+  "name": "UGC.AI",
+  "description": "Create viral AI-generated UGC in seconds. Professional lifestyle imagery and short-form videos optimized for commercials & Reels.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
