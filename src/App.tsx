@@ -9,9 +9,10 @@ import { Dashboard } from './components/Dashboard';
 import { BrandKit } from './components/BrandKit';
 import { SignIn } from './components/SignIn';
 import { Profile } from './components/Profile';
+import { Campaigns } from './components/Campaigns';
 import { auth, onAuthStateChanged, User } from './lib/firebase';
 
-export type Page = 'home' | 'create' | 'community' | 'plans' | 'templates' | 'dashboard' | 'brand-kit' | 'signin' | 'profile';
+export type Page = 'home' | 'create' | 'community' | 'plans' | 'templates' | 'dashboard' | 'brand-kit' | 'signin' | 'profile' | 'campaigns';
 
 export interface Generation {
   id: string;
@@ -68,6 +69,11 @@ export default function App() {
     setCurrentPage('create');
   };
 
+  const handleCampaignPrompt = (prompt: string) => {
+    setSelectedTemplatePrompt(prompt);
+    setCurrentPage('create');
+  };
+
   const handleNewGeneration = (gen: Generation) => {
     setRecentGenerations(prev => [gen, ...prev]);
   };
@@ -105,6 +111,8 @@ export default function App() {
         return <SignIn />;
       case 'profile':
         return <Profile user={user} onNavigate={setCurrentPage} />;
+      case 'campaigns':
+        return <Campaigns onNavigate={setCurrentPage} onUsePrompt={handleCampaignPrompt} />;
       default:
         return <Hero onStart={() => setCurrentPage('create')} />;
     }
@@ -125,7 +133,7 @@ export default function App() {
 
       <footer className="py-12 px-6 text-center opacity-40 text-sm border-t border-white/5 mt-20">
         <p className="mb-2">© 2024 MAKE UGCAD. All rights reserved.</p>
-        <p className="font-mono text-[10px] opacity-50">Deployed at: <a href="http://localhost:3001" className="hover:text-indigo-400 transition-colors">http://localhost:3001</a></p>
+        <p className="font-mono text-[10px] opacity-50">Deployed at: <a href={typeof window !== 'undefined' ? window.location.origin : '#'} className="hover:text-indigo-400 transition-colors">{typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'}</a></p>
       </footer>
     </div>
   );

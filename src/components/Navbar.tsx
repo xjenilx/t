@@ -18,6 +18,8 @@ export const Navbar = ({ currentPage, onNavigate, user, theme, onToggleTheme }: 
     { label: 'Home', id: 'home' },
     { label: 'Create', id: 'create' },
     { label: 'Community', id: 'community' },
+    { label: '🇮🇳 Campaigns', id: 'campaigns' },
+    { label: 'Plans', id: 'plans' },
     { label: 'Dashboard', id: 'dashboard' },
     { label: 'Brand Kit', id: 'brand-kit' },
   ];
