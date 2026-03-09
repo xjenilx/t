@@ -1,9 +1,42 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Check, X } from 'lucide-react';
+import { User } from '../lib/firebase';
 
-export const Pricing = () => {
+interface PricingProps {
+  user: User | null;
+  onPlanUpdated?: () => void;
+}
+
+export const Pricing = ({ user, onPlanUpdated }: PricingProps) => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handlePlanSelection = async (planName: string) => {
+    if (!user) {
+      alert("Please sign in to upgrade your plan.");
+      return;
+    }
+
+    const tier = planName.includes('Pro') ? 'Pro' : 'Basic';
+    setIsUpdating(true);
+
+    try {
+      const res = await fetch('/api/update-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.uid, tier })
+      });
+      if (res.ok) {
+        setSelectedPlan(planName);
+        onPlanUpdated?.();
+      }
+    } catch (err) {
+      console.error("Failed to update plan", err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const plans = [
     {
@@ -36,6 +69,11 @@ export const Pricing = () => {
 
   return (
     <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto text-center">
+      {isUpdating && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin" />
+        </div>
+      )}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -60,8 +98,8 @@ export const Pricing = () => {
               <div className="bg-emerald-500/20 p-4 rounded-full w-fit mx-auto mb-6">
                 <Check className="w-12 h-12 text-emerald-400" />
               </div>
-              <h2 className="text-3xl font-bold mb-4">Plan Selected!</h2>
-              <p className="text-white/60 mb-8">You've successfully chosen the <strong>{selectedPlan}</strong> plan. Ready to generate viral content?</p>
+              <h2 className="text-3xl font-bold mb-4">Plan {selectedPlan === 'Agency Pro' ? 'Upgraded' : 'Selected'}!</h2>
+              <p className="text-white/60 mb-8">You've successfully chosen the <strong>{selectedPlan}</strong> plan. Your credits have been updated.</p>
               <button
                 onClick={() => setSelectedPlan(null)}
                 className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-2xl font-bold transition-all"
@@ -113,7 +151,7 @@ export const Pricing = () => {
             </div>
 
             <button
-              onClick={() => setSelectedPlan(plan.name)}
+              onClick={() => handlePlanSelection(plan.name)}
               className={`w-full py-5 rounded-2xl font-black text-lg transition-all shadow-xl ${plan.highlight
                 ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-500/20'
                 : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'

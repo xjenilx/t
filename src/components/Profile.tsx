@@ -89,7 +89,10 @@ export const Profile = ({ user, onNavigate }: ProfileProps) => {
                                 <History className="w-4 h-4" />
                                 Generation History
                             </button>
-                            <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-white/60 hover:text-white transition-all text-sm font-medium">
+                            <button
+                                onClick={() => onNavigate('plans')}
+                                className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-white/60 hover:text-white transition-all text-sm font-medium"
+                            >
                                 <Zap className="w-4 h-4" />
                                 Subscription Plans
                             </button>

@@ -260,7 +260,7 @@ export const Campaigns = ({ onNavigate, onUsePrompt }: CampaignsProps) => {
     const generateVideo = async (campaignId: string) => {
         const campaign = CAMPAIGNS.find(c => c.id === campaignId);
         if (!campaign) return;
-        const imageUrl = buildPollinationsUrl(campaign.imagePrompt, imageSeeds[campaignId]);
+        const imageUrl = `/api/campaign-image/${campaignId}`;
 
         setVideoStates(prev => ({ ...prev, [campaignId]: { status: 'rendering', url: null, progress: 0 } }));
 
@@ -374,7 +374,7 @@ export const Campaigns = ({ onNavigate, onUsePrompt }: CampaignsProps) => {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {CAMPAIGNS.map((campaign, index) => {
                         const vs = videoStates[campaign.id];
-                        const imgUrl = buildPollinationsUrl(campaign.imagePrompt, imageSeeds[campaign.id]);
+                        const imgUrl = `/api/campaign-image/${campaign.id}`;
 
                         return (
                             <motion.div
@@ -454,7 +454,7 @@ export const Campaigns = ({ onNavigate, onUsePrompt }: CampaignsProps) => {
             <AnimatePresence>
                 {selected && selectedCampaign && (() => {
                     const vs = videoStates[selected];
-                    const imgUrl = buildPollinationsUrl(selectedCampaign.imagePrompt, imageSeeds[selected]);
+                    const imgUrl = `/api/campaign-image/${selected}`;
 
                     return (
                         <motion.div

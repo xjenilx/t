@@ -17,15 +17,9 @@ export const Hero = ({ onStart }: HeroProps) => {
         >
           <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-8">
             <div className="flex -space-x-2">
-              {[1, 2, 3].map((i) => (
-                <img
-                  key={i}
-                  src={`https://picsum.photos/seed/user${i}/100/100`}
-                  className="w-7 h-7 rounded-full border-2 border-[#050505]"
-                  alt="User"
-                  referrerPolicy="no-referrer"
-                />
-              ))}
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64&q=80" className="w-7 h-7 rounded-full border-2 border-[#050505]" alt="User" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64&q=80" className="w-7 h-7 rounded-full border-2 border-[#050505]" alt="User" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&h=64&q=80" className="w-7 h-7 rounded-full border-2 border-[#050505]" alt="User" referrerPolicy="no-referrer" />
             </div>
             <span className="text-sm font-semibold text-white/80">Trusted by 10,000+ creators</span>
           </div>
@@ -101,9 +95,9 @@ export const Hero = ({ onStart }: HeroProps) => {
 
           <div className="flex gap-4 mt-8">
             {[
-              "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=300&q=80",
-              "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=300&q=80",
-              "https://images.unsplash.com/photo-1533107862482-0e6974b06ec4?auto=format&fit=crop&w=300&q=80"
+              "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=80",
+              "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=300&q=80",
+              "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80"
             ].map((src, i) => (
               <div key={i} className="w-20 h-20 rounded-2xl overflow-hidden border border-white/10 shadow-lg">
                 <img src={src} className="w-full h-full object-cover" alt="Thumbnail" referrerPolicy="no-referrer" />

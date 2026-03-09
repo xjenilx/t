@@ -22,6 +22,11 @@ export interface Generation {
   likes?: number;
 }
 
+interface UserProfile {
+  tier: string;
+  credits: number;
+}
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [user, setUser] = useState<User | null>(null);
@@ -100,7 +105,10 @@ export default function App() {
       case 'community':
         return <Community onRemix={handleUseTemplate} />;
       case 'plans':
-        return <Pricing />;
+        return <Pricing user={user} onPlanUpdated={() => {
+          // Force refresh dashboard data if needed, or just let components re-fetch on mount
+          setCurrentPage('dashboard');
+        }} />;
       case 'templates':
         return <Templates onUseStyle={handleUseTemplate} />;
       case 'dashboard':

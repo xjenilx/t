@@ -11,6 +11,17 @@ interface DashboardProps {
 }
 
 export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => {
+  const [profile, setProfile] = React.useState<{ tier: string; credits: number } | null>(null);
+
+  React.useEffect(() => {
+    if (user) {
+      fetch(`/api/user-profile/${user.uid}`)
+        .then(res => res.json())
+        .then(data => setProfile(data))
+        .catch(err => console.error("Failed to fetch profile", err));
+    }
+  }, [user]);
+
   const totalGenerations = generations.length;
   const totalLikes = generations.reduce((s, g) => s + (g.likes || 0), 0);
   const recentDays = 7;
@@ -19,7 +30,7 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
   const stats = [
     { label: 'Total Generations', value: totalGenerations, icon: Sparkles, color: 'text-indigo-400', bg: 'bg-indigo-500/10', delta: `+${recentCount} this week` },
     { label: 'Total Likes', value: totalLikes, icon: TrendingUp, color: 'text-pink-400', bg: 'bg-pink-500/10', delta: 'From community' },
-    { label: 'Credits Left', value: '850', icon: Zap, color: 'text-emerald-400', bg: 'bg-emerald-500/10', delta: 'Basic Plan' },
+    { label: 'Credits Left', value: profile?.credits ?? '...', icon: Zap, color: 'text-emerald-400', bg: 'bg-emerald-500/10', delta: profile?.tier ? `${profile.tier} Plan` : 'Loading...' },
   ];
 
   if (!user) {
@@ -173,10 +184,10 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
           {/* Plan card */}
           <div className="glass-card p-5 border-indigo-500/20 bg-indigo-500/5">
             <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Current Plan</p>
-            <p className="font-black text-lg mb-1">Creator Basic</p>
-            <p className="text-xs text-white/40 mb-4">850 credits remaining</p>
+            <p className="font-black text-lg mb-1">{profile?.tier ?? 'Loading...'}</p>
+            <p className="text-xs text-white/40 mb-4">{profile?.credits ?? '...'} credits remaining</p>
             <div className="w-full bg-white/10 rounded-full h-1.5 mb-4">
-              <div className="bg-indigo-500 h-full rounded-full" style={{ width: '85%' }} />
+              <div className="bg-indigo-500 h-full rounded-full" style={{ width: profile?.tier === 'Pro' ? '100%' : `${(profile?.credits || 0)}%` }} />
             </div>
             <button
               onClick={() => onNavigate('plans')}

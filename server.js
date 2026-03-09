@@ -45,6 +45,11 @@ db.exec(`
     logos TEXT,
     typography TEXT
   );
+  CREATE TABLE IF NOT EXISTS user_profiles (
+    userId TEXT PRIMARY KEY,
+    tier TEXT DEFAULT 'Basic',
+    credits INTEGER DEFAULT 100
+  );
 `);
 try { db.exec(`ALTER TABLE generations ADD COLUMN videoUrl TEXT`); } catch { }
 
@@ -90,9 +95,35 @@ const IMAGE_FALLBACKS = {
     phone: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=768&h=1024&q=85',
     laptop: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=768&h=1024&q=85',
     perfume: 'https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=768&h=1024&q=85',
+    dairy: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80',
+    carpenter: 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?auto=format&fit=crop&w=800&q=80',
+    chocolate: 'https://images.unsplash.com/photo-1548900911-9336bb33924f?auto=format&fit=crop&w=800&q=80',
+    biscuit: 'https://images.unsplash.com/photo-1558961776-6f4bb16393c8?auto=format&fit=crop&w=800&q=80',
+    vaccine: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
+    tea: 'https://images.unsplash.com/photo-1544787210-2211d2471d7b?auto=format&fit=crop&w=800&q=80',
 };
 
-function getContextualImage(keywords) {
+// ── Campaign Specific Fallbacks ───────────────────────────────────────────
+const CAMPAIGN_FALLBACKS = {
+    amul: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80',
+    fevicol: 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?auto=format&fit=crop&w=800&q=80',
+    cadbury: 'https://images.unsplash.com/photo-1548900911-9336bb33924f?auto=format&fit=crop&w=800&q=80',
+    surfexcel: 'https://images.unsplash.com/photo-1541014741259-df549fa9ba6f?auto=format&fit=crop&w=800&q=80',
+    parleg: 'https://images.unsplash.com/photo-1558961776-6f4bb16393c8?auto=format&fit=crop&w=800&q=80',
+    nirma: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=800&q=80',
+    'amitabh-polio': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
+    idea: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80',
+    tatatea: 'https://images.unsplash.com/photo-1544787210-2211d2471d7b?auto=format&fit=crop&w=800&q=80',
+    mtv: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+    cred: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+    ariel: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80',
+    happydent: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=800&q=80',
+    fivestar: 'https://images.unsplash.com/photo-1516728775854-93ad29c9fe80?auto=format&fit=crop&w=800&q=80',
+    urbancompany: 'https://images.unsplash.com/photo-1581578731522-7b754775ab05?auto=format&fit=crop&w=800&q=80',
+};
+
+function getContextualImage(keywords, id) {
+    if (id && CAMPAIGN_FALLBACKS[id]) return CAMPAIGN_FALLBACKS[id];
     const lk = (keywords || '').toLowerCase();
     const match = Object.keys(IMAGE_FALLBACKS).find(k => lk.includes(k));
     return IMAGE_FALLBACKS[match] || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=768&h=1024&q=85';
@@ -128,6 +159,25 @@ function getContextualVideo(keywords) {
     const match = Object.keys(VIDEO_FALLBACKS).find(k => lk.includes(k));
     return VIDEO_FALLBACKS[match] || DEFAULT_VIDEO;
 }
+
+// ── Campaign Prompts ──────────────────────────────────────────────────────
+const CAMPAIGN_PROMPTS = {
+    amul: 'Indian dairy advertising campaign, girl mascot holding butter, colorful Mumbai billboard style, witty retro Indian commercial art, warm golden colors, lifestyle UGC, topical humor advertisement',
+    fevicol: 'Indian craftsman carpenter holding yellow Fevicol adhesive tube, traditional wooden workshop, tools hanging on wall, authentic rural India UGC lifestyle, warm tones',
+    cadbury: 'young Indian woman dancing joyfully, holding Cadbury Dairy Milk purple chocolate bar, cricket stadium background, celebrating with arms outstretched, vibrant colors, happiness and freedom, UGC lifestyle photo',
+    surfexcel: 'happy Indian school child in white school uniform with colorful paint and mud stains, playing outdoors, carefree and joyful, warm family photography, lifestyle UGC, emotional storytelling',
+    parleg: 'Indian schoolboy holding Parle-G biscuit packet, school bag on back, nostalgic wholesome Indian childhood, warm golden afternoon light, genuine happy expression, lifestyle UGC photography',
+    nirma: 'Indian woman in colorful sari washing clothes with Nirma powder, bright sunny day, clean white laundry hanging, traditional Indian courtyard, joyful expression, authentic UGC lifestyle',
+    'amitabh-polio': 'distinguished Indian elder man in white kurta giving oral vaccine drops to young child, caring father-figure expression, health clinic India, warm compassionate lighting, public service announcement style photography',
+    idea: 'young Indian man with light bulb over head, "eureka" moment expression, holding smartphone, village setting with people gathered, direct communication gesture, lifestyle UGC India telecom ad',
+    tatatea: 'young Indian woman waking up early morning, holding Tata Tea cup, sunrise background, civic awareness expression, traditional kurta, morning routine UGC lifestyle, purposeful determined look',
+    mtv: 'young Indian musician playing electric guitar, urban Indian street art background, MTV logo aesthetic, vibrant neon colors, music festival energy, Gen Z lifestyle UGC, headphones, expressive pose',
+    cred: 'respectable middle-aged Indian man in casual clothes looking unexpectedly intimidating on Bangalore street, Indiranagar neighborhood, twist of expectations, humorous expression, premium fintech app UGC',
+    ariel: 'Indian husband and wife doing laundry together in modern apartment, both smiling, equal partnership, Ariel detergent product visible, warm family photography, gender equality UGC lifestyle, genuine connection',
+    happydent: 'Indian man with radiant sparkling white smile, dark elegant palace background lit only by the bright smile, dramatic cinematic lighting, teeth whitening gum ad, magical UGC lifestyle, toothpaste product',
+    fivestar: 'carefree young Indian college student lounging on sofa eating 5Star chocolate bar, blissfully doing nothing, unbothered expression, cozy room, warm afternoon light, university dorm, relatable Gen Z lifestyle UGC',
+    urbancompany: 'professional Indian technician in clean Urban Company branded uniform fixing home appliance, modern apartment, tools in organized bag, competent trustworthy expression, premium home service UGC lifestyle photography'
+};
 
 // ── /api/generate — Real AI Image Generation via Pollinations AI ─────────
 app.post('/api/generate', async (req, res) => {
@@ -281,8 +331,13 @@ OUTPUT ONLY the comma-separated keywords (MAX 60 words). No sentences, no preamb
                 console.log(`✅ AI image generated via Pollinations (${(buffer.byteLength / 1024).toFixed(0)} KB)`);
             } catch (e) {
                 console.warn('Pollinations failed, using contextual fallback:', e.message);
-                imageUrl = getContextualImage((prompt || '') + ' ' + detailedPrompt);
+                imageUrl = getContextualImage((prompt || '') + ' ' + detailedPrompt, id);
             }
+        }
+
+        // ── Deduct Credits ──
+        if (userId && userId !== 'anonymous') {
+            db.prepare('UPDATE user_profiles SET credits = MAX(0, credits - 1) WHERE userId = ?').run(userId);
         }
 
         const generation = {
@@ -309,6 +364,11 @@ OUTPUT ONLY the comma-separated keywords (MAX 60 words). No sentences, no preamb
 app.post('/api/generate-video', async (req, res) => {
     const { imageUrl, prompt, generationId, userId } = req.body;
     try {
+        // ── Deduct Credits ──
+        if (userId && userId !== 'anonymous') {
+            db.prepare('UPDATE user_profiles SET credits = MAX(0, credits - 1) WHERE userId = ?').run(userId);
+        }
+
         let videoUrl = null;
 
         // ── Option 1: Replicate Stable Video Diffusion (if token configured) ──
@@ -441,6 +501,121 @@ app.get('/api/proxy-download', async (req, res) => {
         res.send(Buffer.from(await r.arrayBuffer()));
     } catch (e) {
         res.status(500).send('Proxy download failed');
+    }
+});
+
+// ── User Profiles & Plans ───────────────────────────────────────────────
+app.get('/api/user-profile/:userId', (req, res) => {
+    try {
+        let profile = db.prepare('SELECT * FROM user_profiles WHERE userId = ?').get(req.params.userId);
+        if (!profile) {
+            // Auto-create profile for new users
+            db.prepare('INSERT INTO user_profiles (userId, tier, credits) VALUES (?, ?, ?)').run(req.params.userId, 'Basic', 100);
+            profile = { userId: req.params.userId, tier: 'Basic', credits: 100 };
+        }
+        res.json(profile);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+app.post('/api/update-plan', (req, res) => {
+    try {
+        const { userId, tier } = req.body;
+        const credits = tier === 'Pro' ? 999999 : 100;
+        db.prepare('INSERT OR REPLACE INTO user_profiles (userId, tier, credits) VALUES (?, ?, ?)')
+            .run(userId, tier, credits);
+        res.json({ success: true, tier, credits });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// ── Campaign Images ───────────────────────────────────────────────────────
+app.get('/api/campaign-image/:id', async (req, res) => {
+    const { id } = req.params;
+    const prompt = CAMPAIGN_PROMPTS[id];
+
+    if (!prompt) {
+        return res.status(404).json({ error: 'Campaign not found' });
+    }
+
+    try {
+        console.log(`📸 Generating image for campaign: ${id}...`);
+        let imageUrl;
+
+        // Stage 1: Hugging Face
+        if (process.env.HF_TOKEN) {
+            try {
+                const response = await hf.textToImage({
+                    model: 'Tongyi-MAI/Z-Image-Turbo',
+                    inputs: prompt,
+                    parameters: { guidance_scale: 0.0, num_inference_steps: 8 }
+                });
+                const buffer = await response.arrayBuffer();
+                imageUrl = `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`;
+                console.log(`✅ Campaign image generated via HF`);
+            } catch (e) {
+                console.warn('HF failed for campaign image:', e.message);
+            }
+        }
+
+        // Stage 2: OpenAI
+        if (!imageUrl && process.env.OPENAI_API_KEY) {
+            try {
+                const result = await openai.images.generate({
+                    model: "dall-e-3",
+                    prompt: prompt,
+                    size: "1024x1024",
+                    response_format: "b64_json"
+                });
+                imageUrl = `data:image/png;base64,${result.data[0].b64_json}`;
+                console.log(`✅ Campaign image generated via OpenAI`);
+            } catch (e) {
+                console.warn('OpenAI failed for campaign image:', e.message);
+            }
+        }
+
+        // Try Pollinations
+        if (!imageUrl) {
+            const seed = Math.floor(Math.random() * 9_999_999);
+            const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
+            try {
+                // Add short timeout for pollinations to avoid hanging
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                const imgRes = await fetch(pollinationsUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (imgRes.ok) {
+                    const buffer = await imgRes.arrayBuffer();
+                    imageUrl = `data:image/jpeg;base64,${Buffer.from(buffer).toString('base64')}`;
+                    console.log(`✅ Campaign image generated via Pollinations`);
+                }
+            } catch (e) {
+                console.warn('Pollinations failed for campaign image:', e.message);
+            }
+        }
+
+        // Final Fallback: Campaign-specific or Contextual
+        if (!imageUrl) {
+            imageUrl = getContextualImage(prompt, id);
+            console.log(`⚠️ All AI failed, using reliable fallback for campaign: ${id}`);
+        }
+
+        // Detect base64 or URL
+        if (imageUrl.startsWith('data:')) {
+            const [header, base64] = imageUrl.split(',');
+            const mime = header.match(/:(.*?);/)[1];
+            res.setHeader('Content-Type', mime);
+            res.send(Buffer.from(base64, 'base64'));
+        } else {
+            res.redirect(imageUrl);
+        }
+
+    } catch (error) {
+        console.error(`🔥 Campaign image error for ${id}:`, error);
+        res.status(500).json({ error: error.message });
     }
 });
 
