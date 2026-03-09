@@ -17,7 +17,15 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '100mb' }));
+
+// ── Error Boundary ──────────────────────────────────────────────────────────
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
 
 // ── Database ──────────────────────────────────────────────────────────────
 const db = new Database(join(__dirname, 'ugc.db'));
@@ -392,16 +400,32 @@ app.get('/api/generations/:userId', (req, res) => {
 
 // ── Brand Kit ─────────────────────────────────────────────────────────────
 app.get('/api/brand-kit/:userId', (req, res) => {
-    const row = db.prepare('SELECT * FROM brand_kits WHERE userId = ?').get(req.params.userId);
-    if (row) res.json({ colors: JSON.parse(row.colors), logos: JSON.parse(row.logos), typography: JSON.parse(row.typography) });
-    else res.status(404).json({ error: 'Not found' });
+    try {
+        const row = db.prepare('SELECT * FROM brand_kits WHERE userId = ?').get(req.params.userId);
+        if (row) {
+            res.json({
+                colors: JSON.parse(row.colors || '[]'),
+                logos: JSON.parse(row.logos || '[]'),
+                typography: JSON.parse(row.typography || '{}')
+            });
+        }
+        else res.status(404).json({ error: 'Not found' });
+    } catch (e) {
+        console.error('Brand kit fetch error:', e);
+        res.status(500).json({ error: e.message });
+    }
 });
 
 app.post('/api/brand-kit', (req, res) => {
-    const { userId, colors, logos, typography } = req.body;
-    db.prepare('INSERT OR REPLACE INTO brand_kits (userId, colors, logos, typography) VALUES (?, ?, ?, ?)')
-        .run(userId, JSON.stringify(colors), JSON.stringify(logos), JSON.stringify(typography));
-    res.json({ success: true });
+    try {
+        const { userId, colors, logos, typography } = req.body;
+        db.prepare('INSERT OR REPLACE INTO brand_kits (userId, colors, logos, typography) VALUES (?, ?, ?, ?)')
+            .run(userId, JSON.stringify(colors), JSON.stringify(logos), JSON.stringify(typography));
+        res.json({ success: true });
+    } catch (e) {
+        console.error('Brand kit save error:', e);
+        res.status(500).json({ error: e.message });
+    }
 });
 
 // ── Proxy Download ────────────────────────────────────────────────────────
@@ -476,7 +500,18 @@ app.get('*', (req, res) => {
     res.sendFile(join(__dirname, 'dist', 'index.html'));
 });
 
+// ── Global Error Handler ───────────────────────────────────────────────
+app.use((err, req, res, next) => {
+    console.error('🔥 Global Express Error:', err);
+    res.status(500).json({
+        error: 'Internal Server Error',
+        message: err.message,
+        path: req.path
+    });
+});
+
 app.listen(port, '0.0.0.0', () => {
-    console.log(`🚀 Server running at ${process.env.APP_URL || `http://localhost:${port}`}`);
-    console.log(`📡 API endpoints available at ${process.env.APP_URL || `http://localhost:${port}`}/api`);
+    const actualUrl = `http://localhost:${port}`;
+    console.log(`🚀 Server running at ${actualUrl}`);
+    console.log(`📡 API endpoints available at ${actualUrl}/api`);
 });
