@@ -27,10 +27,10 @@ const PIPELINE_STEPS = [
 ];
 
 const IMAGE_STATUS_MSGS = [
-  'Gemini is analyzing your photos…',
-  'Crafting a cinematic UGC prompt…',
-  'Pollinations AI (Flux) is generating…',
-  'Compositing person + product…',
+  'Kimi AI is analyzing your photos…',
+  'Crafting a cinematic Flux.1 prompt…',
+  'Hugging Face Inference is starting…',
+  'Pollinations AI is rendering…',
   'Applying lifestyle lighting…',
   'Almost ready…',
 ];
@@ -303,6 +303,8 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
 
       // Auto-trigger video generation!
       setTimeout(() => generateVideo(data.imageUrl, data.id), 600);
+      // Auto-trigger ad copy generation!
+      setTimeout(() => generateAdCopy(), 1200);
     } catch (err: any) {
       clearInterval(timer);
       clearInterval(msgTimer);
@@ -461,7 +463,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
       const res = await fetch('/api/hf-ad-copy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: `Perfect ad for ${prompt || 'this awesome product'} [MASK].` })
+        body: JSON.stringify({ prompt: prompt || 'this amazing lifestyle product' })
       });
       const data = await res.json();
       if (data.copy) setAdCopy(data.copy);

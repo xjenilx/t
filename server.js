@@ -188,8 +188,39 @@ app.post('/api/generate', async (req, res) => {
             ? `${prompt}, photorealistic UGC ad, high quality, 4k`
             : `professional lifestyle UGC photo, person naturally using product, photorealistic, natural lighting, social media aesthetic, high quality`;
 
-        // ── Vision Prompt Crafting (Gemini or OpenAI) ──
-        if (process.env.OPENAI_API_KEY) {
+        // ── Vision Prompt Crafting (HF -> OpenAI -> Gemini) ──
+        if (process.env.HF_TOKEN && process.env.HF_MODEL && (userImage || productImage)) {
+            try {
+                console.log(`🎨 Crafting prompt via HF (${process.env.HF_MODEL})...`);
+                const instruction = `You are a world-class UGC art director and master Flux.1 prompt engineer.
+Two source images are provided as context: (1) PERSON, (2) PRODUCT.
+Task: Generate a comma-separated list of high-accuracy keywords for a hyper-realistic UGC photo.
+
+STRICT COMPOSITION REQUIREMENTS:
+1. SUBJECT ACTION: The PERSON must be clearly USING or HOLDING the PRODUCT.
+2. ANATOMIC PRECISION: Describe the person's EXACT ethnicity, age group, hair color/texture, and clothing based on context.
+3. PRODUCT FIDELITY: Describe the product's EXACT material (glass, matte, chrome), primary color, and brand logo placement.
+4. CAMERA: "Shot on iPhone 15 Pro, 35mm lens, f/1.8, shallow depth of field, sharp focus on product, cinematic lifestyle lighting".
+5. ENVIRONMENT: "Clean, natural setting, morning sunlight, soft shadows".
+
+Extra user context: "${prompt || 'Photorealistic UGC ad'}"
+OUTPUT ONLY the comma-separated keywords (MAX 60 words). No sentences.`;
+
+                const response = await hf.chatCompletion({
+                    model: process.env.HF_MODEL,
+                    messages: [{ role: "user", content: instruction }],
+                    max_tokens: 200,
+                });
+
+                const crafted = response.choices[0]?.message?.content?.trim();
+                if (crafted) {
+                    detailedPrompt = crafted;
+                    console.log('✨ Crafted HF prompt:', detailedPrompt.substring(0, 120) + '...');
+                }
+            } catch (e) {
+                console.warn('HF prompt crafting failed:', e.message);
+            }
+        } else if (process.env.OPENAI_API_KEY) {
             try {
                 const messages = [
                     {
@@ -641,12 +672,15 @@ app.post('/api/hf-ad-copy', async (req, res) => {
 
         try {
             if (modelId.includes('Kimi') || modelId.includes('Instruct')) {
-                const response = await hf.textGeneration({
+                const response = await hf.chatCompletion({
                     model: modelId,
-                    inputs: `Generate 3 short, viral UGC ad captions for a product described as: ${prompt || 'an amazing lifestyle product'}. Output ONLY the captions, one per line.`,
-                    parameters: { max_new_tokens: 100, return_full_text: false }
+                    messages: [{
+                        role: "user",
+                        content: `Generate 3 short, viral UGC ad captions for a product described as: ${prompt || 'an amazing lifestyle product'}. Output ONLY the captions, one per line.`
+                    }],
+                    max_tokens: 200,
                 });
-                copy = response.generated_text.split('\n').filter(line => line.trim().length > 0).slice(0, 3);
+                copy = response.choices[0]?.message?.content?.split('\n').filter(line => line.trim().length > 0).slice(0, 3);
             } else {
                 const response = await hf.fillMask({
                     model: modelId,
