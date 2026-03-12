@@ -18,8 +18,8 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         </svg>
       </div>
       <div className="flex items-center font-black text-2xl tracking-tighter">
-        <span className="text-white">MAKE</span>
-        <span className="text-[#6366F1] ml-1">UGCAD</span>
+        <span className="text-primary">MAKE</span>
+        <span className="text-indigo-600 dark:text-[#6366F1] ml-1">UGCAD</span>
       </div>
     </div>
   );

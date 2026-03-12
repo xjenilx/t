@@ -506,7 +506,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
           <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3">
             UGC <span className="text-indigo-400">Studio</span>
           </h1>
-          <p className="text-white/40 text-base max-w-xl mx-auto">
+          <p className="text-muted text-base max-w-xl mx-auto">
             Upload your photo + product → AI composites them → generates a promo video
           </p>
         </motion.div>
@@ -526,18 +526,18 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                     className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300
                       ${done ? 'bg-indigo-600 border-indigo-400 text-white' : ''}
                       ${active ? 'bg-indigo-600/20 border-indigo-400 text-indigo-300 ring-4 ring-indigo-500/20' : ''}
-                      ${!done && !active ? 'bg-white/5 border-white/10 text-white/20' : ''}`}
+                      ${!done && !active ? 'bg-[var(--glass-bg)] border-dim text-muted opacity-50' : ''}`}
                   >
                     {done ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-4 h-4" />}
                   </motion.div>
                   <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors
-                    ${active ? 'text-indigo-400' : done ? 'text-white/50' : 'text-white/15'}`}>
+                    ${active ? 'text-indigo-400' : done ? 'text-secondary opacity-70' : 'text-muted'}`}>
                     {step.label}
                   </span>
                 </div>
                 {i < PIPELINE_STEPS.length - 1 && (
                   <div className={`h-0.5 flex-1 mx-1.5 rounded-full transition-all duration-700 mb-5
-                    ${i < stepIdx ? 'bg-indigo-500' : 'bg-white/10'}`} />
+                    ${i < stepIdx ? 'bg-indigo-500' : 'bg-slate-200 dark:bg-white/10'}`} />
                 )}
               </React.Fragment>
             );
@@ -546,9 +546,9 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
 
         {/* ═══ GUEST BANNER ═══ */}
         {!user && (
-          <div className="mb-6 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl px-5 py-3 flex items-center justify-between gap-4">
-            <p className="text-sm text-indigo-300">🎉 <strong>Free to try!</strong> <span className="text-white/40">Sign in to save your creations.</span></p>
-            <button onClick={signInWithGoogle} className="text-xs font-black bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl transition-all">
+          <div className="mb-6 bg-indigo-500/5 dark:bg-indigo-500/10 border border-indigo-500/10 dark:border-indigo-500/20 rounded-2xl px-5 py-3 flex items-center justify-between gap-4">
+            <p className="text-sm text-indigo-700 dark:text-indigo-300">🎉 <strong>Free to try!</strong> <span className="text-muted">Sign in to save your creations.</span></p>
+            <button onClick={signInWithGoogle} className="text-xs font-black bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl transition-all shadow-lg shadow-indigo-500/20">
               Sign In
             </button>
           </div>
@@ -574,7 +574,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
               transition={{ duration: 0.35 }}
             >
               {/* Pipeline visual strip */}
-              <div className="glass-card p-4 mb-6 flex items-center justify-between text-xs text-white/30 overflow-x-auto gap-2">
+              <div className="glass-card p-4 mb-6 flex items-center justify-between text-xs text-muted/60 overflow-x-auto gap-2">
                 {[
                   { icon: Camera, label: 'Your Photo', color: 'text-indigo-400' },
                   { icon: Package, label: 'Product Photo', color: 'text-purple-400' },
@@ -599,7 +599,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                   onClick={() => userInputRef.current?.click()}
                   className={`group relative cursor-pointer rounded-3xl border-2 border-dashed transition-all overflow-hidden
                     aspect-[3/4] flex flex-col items-center justify-center p-6 text-center
-                    ${userImage ? 'border-indigo-500/60 shadow-lg shadow-indigo-500/10' : 'border-white/10 hover:border-indigo-500/40 hover:bg-indigo-500/5'}`}
+                    ${userImage ? 'border-indigo-500/60 shadow-lg shadow-indigo-500/10' : 'border-dim hover:border-indigo-500/40 hover:bg-indigo-500/5'}`}
                 >
                   {userImage ? (
                     <>
@@ -618,8 +618,8 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                         <Camera className="w-10 h-10 text-indigo-400" />
                       </div>
                       <p className="font-bold text-base mb-1">Your Photo</p>
-                      <p className="text-xs text-white/40">A clear photo of yourself</p>
-                      <p className="text-[10px] text-white/25 mt-2">PNG · JPG · up to 10MB</p>
+                      <p className="text-xs text-muted">A clear photo of yourself</p>
+                      <p className="text-[10px] text-muted/40 mt-2">PNG · JPG · up to 10MB</p>
                     </>
                   )}
                   <input ref={userInputRef} type="file" accept="image/*" className="hidden" onChange={e => handleFile(e, 'user')} />
@@ -630,7 +630,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                   onClick={() => productInputRef.current?.click()}
                   className={`group relative cursor-pointer rounded-3xl border-2 border-dashed transition-all overflow-hidden
                     aspect-[3/4] flex flex-col items-center justify-center p-6 text-center
-                    ${productImage ? 'border-purple-500/60 shadow-lg shadow-purple-500/10' : 'border-white/10 hover:border-purple-500/40 hover:bg-purple-500/5'}`}
+                    ${productImage ? 'border-purple-500/60 shadow-lg shadow-purple-500/10' : 'border-dim hover:border-purple-500/40 hover:bg-purple-500/5'}`}
                 >
                   {productImage ? (
                     <>
@@ -649,8 +649,8 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                         <Package className="w-10 h-10 text-purple-400" />
                       </div>
                       <p className="font-bold text-base mb-1">Product Photo</p>
-                      <p className="text-xs text-white/40">The product to feature</p>
-                      <p className="text-[10px] text-white/25 mt-2">PNG · JPG · up to 10MB</p>
+                      <p className="text-xs text-muted">The product to feature</p>
+                      <p className="text-[10px] text-muted/40 mt-2">PNG · JPG · up to 10MB</p>
                     </>
                   )}
                   <input ref={productInputRef} type="file" accept="image/*" className="hidden" onChange={e => handleFile(e, 'product')} />
@@ -659,7 +659,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
 
               {/* Campaign Theme Selector */}
               <div className="mb-6">
-                <label className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 block">
+                <label className="text-xs font-bold text-muted uppercase tracking-widest mb-3 block">
                   Modern AI Ad Theme <span className="text-purple-400 normal-case font-normal ml-2">✨ New</span>
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -669,7 +669,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                       onClick={() => setCampaignTheme(theme.id)}
                       className={`text-[11px] font-bold px-4 py-2 rounded-full transition-all border ${campaignTheme === theme.id
                         ? 'bg-purple-600 border-purple-400 text-white shadow-lg shadow-purple-500/20'
-                        : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10 hover:text-white'
+                        : 'bg-[var(--glass-bg)] border-dim text-secondary/70 hover:bg-white/10 hover:text-white'
                         }`}
                     >
                       {theme.label}
@@ -680,7 +680,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
 
               {/* Cinematic Camera Motion */}
               <div className="mb-6">
-                <label className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3 block">
+                <label className="text-xs font-bold text-muted uppercase tracking-widest mb-3 block">
                   Cinematic Camera Motion <span className="text-purple-400 normal-case font-normal ml-2">Like Adobe Firefly / Vidu AI</span>
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
@@ -696,7 +696,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                       onClick={() => setMotionStyle(motion.id)}
                       className={`text-[11px] font-bold py-3 px-2 rounded-xl transition-all border ${motionStyle === motion.id
                         ? 'bg-purple-600 border-purple-400 text-white shadow-lg shadow-purple-500/20'
-                        : 'bg-white/5 border-white/10 text-white/50 hover:bg-white/10 hover:text-white'
+                        : 'bg-[var(--glass-bg)] border-dim text-secondary/70 hover:bg-white/10 hover:text-white'
                         }`}
                     >
                       {motion.label}
@@ -707,15 +707,15 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
 
               {/* Prompt */}
               <div className="mb-6">
-                <label className="text-xs font-bold text-white/40 uppercase tracking-widest mb-2 block">
-                  Scene / Context <span className="text-white/20 normal-case font-normal">(optional)</span>
+                <label className="text-xs font-bold text-muted uppercase tracking-widest mb-2 block">
+                  Scene / Context <span className="text-muted/50 normal-case font-normal">(optional)</span>
                 </label>
                 <textarea
                   value={prompt}
                   onChange={e => setPrompt(e.target.value)}
                   rows={2}
                   placeholder="e.g. Morning skincare routine, gym workout, fashion shoot at sunset..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/50 transition-all resize-none text-sm"
+                  className="w-full bg-[var(--glass-bg)] border border-dim rounded-2xl px-4 py-3 text-white placeholder:text-muted/50 focus:outline-none focus:border-indigo-500/50 transition-all resize-none text-sm"
                 />
               </div>
 
@@ -748,7 +748,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
               </div>
 
               {(!userImage || !productImage) && (
-                <p className="text-center text-xs text-white/25 mt-3 block">
+                <p className="text-center text-xs text-muted/40 mt-3 block">
                   {!userImage && !productImage
                     ? 'Upload at least one photo to animate it, or both for an AI scene.'
                     : !userImage || !productImage
@@ -776,24 +776,24 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                 key={imgStatusMsg}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-white/40 max-w-sm mb-10 text-sm leading-relaxed h-5"
+                className="text-muted max-w-sm mb-10 text-sm leading-relaxed h-5"
               >
                 {imgStatusMsg}
               </motion.p>
               {/* Progress bar */}
-              <div className="w-72 bg-white/5 rounded-full h-2 overflow-hidden mb-3">
+              <div className="w-72 bg-[var(--glass-bg)] rounded-full h-2 overflow-hidden mb-3">
                 <motion.div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
                   animate={{ width: `${imageProgress}%` }} transition={{ ease: 'easeOut', duration: 0.5 }} />
               </div>
-              <p className="text-xs text-white/30 font-mono">{Math.round(imageProgress)}%</p>
+              <p className="text-xs text-muted/60 font-mono">{Math.round(imageProgress)}%</p>
 
               {/* Source thumbnails */}
               <div className="flex items-center gap-4 mt-10 opacity-50">
-                {userImage && <img src={userImage} className="w-16 h-20 object-cover rounded-xl border border-white/10" />}
-                <Sparkles className="w-6 h-6 text-white/30" />
-                {productImage && <img src={productImage} className="w-16 h-20 object-cover rounded-xl border border-white/10" />}
+                {userImage && <img src={userImage} className="w-16 h-20 object-cover rounded-xl border border-dim" />}
+                <Sparkles className="w-6 h-6 text-muted/60" />
+                {productImage && <img src={productImage} className="w-16 h-20 object-cover rounded-xl border border-dim" />}
               </div>
-              <p className="text-[10px] text-white/20 mt-4 font-mono">Powered by Pollinations AI · Flux Model</p>
+              <p className="text-[10px] text-muted/50 mt-4 font-mono">Powered by Pollinations AI · Flux Model</p>
             </motion.div>
           )}
 
@@ -810,11 +810,11 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                     <CheckCircle className="w-4 h-4 text-emerald-400" />
                     <span className="text-sm font-black text-emerald-400 uppercase tracking-widest">AI Photo Generated!</span>
                   </div>
-                  <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40">
+                  <div className="relative rounded-3xl overflow-hidden border border-dim shadow-2xl shadow-black/40">
                     {imageLoadError ? (
-                      <div className="aspect-[3/4] bg-white/5 flex flex-col items-center justify-center">
-                        <ImageIcon className="w-12 h-12 text-white/20 mb-3" />
-                        <p className="text-white/40 text-sm">Image unavailable</p>
+                      <div className="aspect-[3/4] bg-[var(--glass-bg)] flex flex-col items-center justify-center">
+                        <ImageIcon className="w-12 h-12 text-muted/50 mb-3" />
+                        <p className="text-muted text-sm">Image unavailable</p>
                       </div>
                     ) : (
                       <img
@@ -827,18 +827,18 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                     {/* Download overlay */}
                     <button
                       onClick={() => handleDownload(generatedImage, 'jpg', 'photo')}
-                      className="absolute top-4 right-4 bg-black/50 backdrop-blur hover:bg-black/70 text-white p-3 rounded-xl border border-white/10 transition-all"
+                      className="absolute top-4 right-4 bg-black/50 backdrop-blur hover:bg-black/70 text-white p-3 rounded-xl border border-dim transition-all"
                     >
                       {isDownloading === 'photo' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
                     </button>
                   </div>
                   {/* Source row */}
                   <div className="mt-3 glass-card p-3 flex items-center gap-3">
-                    <span className="text-[10px] text-white/30 uppercase font-bold tracking-widest">Sources:</span>
-                    {userImage && <img src={userImage} className="w-10 h-12 object-cover rounded-lg border border-white/10" />}
-                    <Sparkles className="w-3.5 h-3.5 text-white/20" />
-                    {productImage && <img src={productImage} className="w-10 h-12 object-cover rounded-lg border border-white/10" />}
-                    <ArrowRight className="w-3.5 h-3.5 text-white/20 ml-auto" />
+                    <span className="text-[10px] text-muted/60 uppercase font-bold tracking-widest">Sources:</span>
+                    {userImage && <img src={userImage} className="w-10 h-12 object-cover rounded-lg border border-dim" />}
+                    <Sparkles className="w-3.5 h-3.5 text-muted/50" />
+                    {productImage && <img src={productImage} className="w-10 h-12 object-cover rounded-lg border border-dim" />}
+                    <ArrowRight className="w-3.5 h-3.5 text-muted/50 ml-auto" />
                     <img src={generatedImage} className="w-10 h-12 object-cover rounded-lg border border-indigo-500/30" onError={() => { }} />
                   </div>
                 </div>
@@ -847,7 +847,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                 <div className="space-y-5">
                   <div className="glass-card p-6">
                     <h3 className="text-xl font-black mb-2">🎉 Photo is ready!</h3>
-                    <p className="text-sm text-white/50 leading-relaxed">
+                    <p className="text-sm text-secondary/70 leading-relaxed">
                       AI has generated your composite lifestyle photo. Now create a promotional video from this image.
                     </p>
                   </div>
@@ -860,18 +860,18 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                       </div>
                       <div>
                         <p className="font-black text-sm">Step 4: Generate Video</p>
-                        <p className="text-[11px] text-white/40">AI creates a cinematic promo video</p>
+                        <p className="text-[11px] text-muted">AI creates a cinematic promo video</p>
                       </div>
                     </div>
 
                     <div className="mb-4">
-                      <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2 block">
+                      <label className="text-[10px] font-bold text-muted uppercase tracking-widest mb-2 block">
                         Edit Camera Motion
                       </label>
                       <select
                         value={motionStyle}
                         onChange={(e) => setMotionStyle(e.target.value)}
-                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50"
+                        className="w-full bg-black/40 border border-dim rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50"
                       >
                         <option value="smart">Smart Pan (AI Default)</option>
                         <option value="zoom-in">Cinematic Zoom In</option>
@@ -892,7 +892,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                     </motion.button>
                   </div>
 
-                  <button onClick={reset} className="w-full text-center text-white/25 hover:text-white/50 text-sm py-2 transition-colors">
+                  <button onClick={reset} className="w-full text-center text-muted/40 hover:text-secondary/70 text-sm py-2 transition-colors">
                     ↩ Start Over
                   </button>
                 </div>
@@ -917,20 +917,20 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                 key={vidStatusMsg}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-white/40 max-w-sm mb-10 text-sm leading-relaxed h-5"
+                className="text-muted max-w-sm mb-10 text-sm leading-relaxed h-5"
               >
                 {vidStatusMsg}
               </motion.p>
-              <div className="w-72 bg-white/5 rounded-full h-2 overflow-hidden mb-3">
+              <div className="w-72 bg-[var(--glass-bg)] rounded-full h-2 overflow-hidden mb-3">
                 <motion.div className="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500"
                   animate={{ width: `${videoProgress}%` }} transition={{ ease: 'easeOut', duration: 0.4 }} />
               </div>
-              <p className="text-xs text-white/30 font-mono">{Math.round(videoProgress)}%</p>
+              <p className="text-xs text-muted/60 font-mono">{Math.round(videoProgress)}%</p>
 
               {generatedImage && (
-                <img src={generatedImage} className="w-24 h-32 object-cover rounded-2xl border border-white/10 mt-10 opacity-40" onError={() => { }} />
+                <img src={generatedImage} className="w-24 h-32 object-cover rounded-2xl border border-dim mt-10 opacity-40" onError={() => { }} />
               )}
-              <p className="text-[10px] text-white/20 mt-4 font-mono">Rendering via Canvas · MediaRecorder API</p>
+              <p className="text-[10px] text-muted/50 mt-4 font-mono">Rendering via Canvas · MediaRecorder API</p>
             </motion.div>
           )}
 
@@ -947,7 +947,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                   </div>
                 </motion.div>
                 <h2 className="text-3xl font-black mb-2">Your UGC is Ready! 🎉</h2>
-                <p className="text-white/40">Download your AI-generated photo and promo video below</p>
+                <p className="text-muted">Download your AI-generated photo and promo video below</p>
               </div>
 
               {/* Two-column output */}
@@ -956,7 +956,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                 {/* ── Generated Photo ── */}
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-black text-white/50 uppercase tracking-widest flex items-center gap-1.5">
+                    <span className="text-xs font-black text-secondary/70 uppercase tracking-widest flex items-center gap-1.5">
                       <ImageIcon className="w-3.5 h-3.5 text-indigo-400" /> AI Generated Photo
                     </span>
                     <button
@@ -967,7 +967,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                       Download
                     </button>
                   </div>
-                  <div className="rounded-3xl overflow-hidden border border-white/10 shadow-xl bg-black/20">
+                  <div className="rounded-3xl overflow-hidden border border-dim shadow-xl bg-black/20">
                     <img src={generatedImage} className="w-full object-cover" alt="Generated Photo" onError={() => { }} />
                   </div>
                 </motion.div>
@@ -975,7 +975,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                 {/* ── Promotional Video ── */}
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-black text-white/50 uppercase tracking-widest flex items-center gap-1.5">
+                    <span className="text-xs font-black text-secondary/70 uppercase tracking-widest flex items-center gap-1.5">
                       <Play className="w-3.5 h-3.5 text-purple-400" /> Promo Video
                     </span>
                     {generatedVideo && (
@@ -1014,9 +1014,9 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                       </div>
                     </div>
                   ) : (
-                    <div className="rounded-3xl border border-white/10 bg-white/5 aspect-[3/4] flex flex-col items-center justify-center">
+                    <div className="rounded-3xl border border-dim bg-[var(--glass-bg)] aspect-[3/4] flex flex-col items-center justify-center">
                       <Video className="w-10 h-10 text-white/10 mb-3" />
-                      <p className="text-white/25 text-sm">Video unavailable</p>
+                      <p className="text-muted/40 text-sm">Video unavailable</p>
                     </div>
                   )}
                 </motion.div>
@@ -1032,7 +1032,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                       </div>
                       <div>
                         <p className="font-black text-sm">AI Ad Copy Generator</p>
-                        <p className="text-[11px] text-white/40">Powered by Hugging Face Inference</p>
+                        <p className="text-[11px] text-muted">Powered by Hugging Face Inference</p>
                       </div>
                     </div>
                     <button
@@ -1055,13 +1055,13 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                           transition={{ delay: idx * 0.1 }}
                           className="group relative bg-black/40 border border-white/5 p-4 rounded-xl hover:border-indigo-500/30 transition-all"
                         >
-                          <p className="text-sm text-white/80 pr-10">{text}</p>
+                          <p className="text-sm text-primary pr-10">{text}</p>
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(text);
                               // Simple toast-like effect could be added here
                             }}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-white/5 hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-[var(--glass-bg)] hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all"
                             title="Copy to clipboard"
                           >
                             <CheckCircle className="w-4 h-4 text-emerald-400" />
@@ -1070,8 +1070,8 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
                       ))}
                     </div>
                   ) : (
-                    <div className="py-8 text-center border border-dashed border-white/10 rounded-2xl">
-                      <p className="text-sm text-white/20">Click generate to build viral captions for your ad</p>
+                    <div className="py-8 text-center border border-dashed border-dim rounded-2xl">
+                      <p className="text-sm text-muted/50">Click generate to build viral captions for your ad</p>
                     </div>
                   )}
                 </div>
@@ -1081,7 +1081,7 @@ export const Create = ({ user, initialPrompt, onGenerated, onClearTemplate }: Cr
               <div className="flex gap-4">
                 <button
                   onClick={reset}
-                  className="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 font-bold transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl bg-[var(--glass-bg)] hover:bg-white/10 border border-dim font-bold transition-all"
                 >
                   <RefreshCw className="w-4 h-4" /> Create Another
                 </button>

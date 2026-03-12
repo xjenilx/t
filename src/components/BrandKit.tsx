@@ -77,7 +77,7 @@ export const BrandKit = ({ user }: BrandKitProps) => {
     return (
       <div className="pt-32 px-6 max-w-7xl mx-auto text-center">
         <h1 className="text-4xl font-bold mb-4">Brand Kit</h1>
-        <p className="text-white/40">Please sign in to manage your brand kit.</p>
+        <p className="text-muted">Please sign in to manage your brand kit.</p>
       </div>
     );
   }
@@ -86,7 +86,7 @@ export const BrandKit = ({ user }: BrandKitProps) => {
     <div className="pt-32 pb-20 px-6 max-w-5xl mx-auto">
       <div className="mb-12">
         <h1 className="text-4xl font-extrabold mb-4">Brand Kit</h1>
-        <p className="text-white/60">Maintain brand consistency across all your AI-generated UGC.</p>
+        <p className="text-secondary">Maintain brand consistency across all your AI-generated UGC.</p>
       </div>
 
       <div className="space-y-12">
@@ -128,9 +128,9 @@ export const BrandKit = ({ user }: BrandKitProps) => {
                 </button>
               </div>
             ))}
-            <label className="glass-card aspect-square flex flex-col items-center justify-center border-2 border-dashed border-white/10 hover:border-white/20 cursor-pointer transition-all">
-              <Plus className="w-8 h-8 text-white/20 mb-2" />
-              <span className="text-xs text-white/40">Add Logo</span>
+            <label className="glass-card aspect-square flex flex-col items-center justify-center border-2 border-dashed border-dim hover:border-white/20 cursor-pointer transition-all">
+              <Plus className="w-8 h-8 text-muted mb-2" />
+              <span className="text-xs text-muted">Add Logo</span>
               <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
             </label>
           </div>
@@ -149,7 +149,7 @@ export const BrandKit = ({ user }: BrandKitProps) => {
             {colors.map((color, i) => (
               <div key={i} className="flex flex-col gap-3">
                 <div
-                  className="w-24 h-24 rounded-2xl border border-white/10 shadow-lg"
+                  className="w-24 h-24 rounded-2xl border border-dim shadow-lg"
                   style={{ backgroundColor: color }}
                 />
                 <input
@@ -160,15 +160,15 @@ export const BrandKit = ({ user }: BrandKitProps) => {
                     newColors[i] = e.target.value;
                     setColors(newColors);
                   }}
-                  className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-center focus:outline-none focus:border-indigo-500/50"
+                  className="bg-[var(--glass-bg)] border border-dim rounded-lg px-3 py-1.5 text-xs text-center focus:outline-none focus:border-indigo-500/50"
                 />
               </div>
             ))}
             <button
               onClick={() => setColors(prev => [...prev, '#ffffff'])}
-              className="w-24 h-24 rounded-2xl border-2 border-dashed border-white/10 hover:border-white/20 flex items-center justify-center transition-all"
+              className="w-24 h-24 rounded-2xl border-2 border-dashed border-dim hover:border-white/20 flex items-center justify-center transition-all"
             >
-              <Plus className="w-6 h-6 text-white/20" />
+              <Plus className="w-6 h-6 text-muted" />
             </button>
           </div>
         </section>
@@ -184,17 +184,17 @@ export const BrandKit = ({ user }: BrandKitProps) => {
 
           <div className="glass-card p-8 space-y-6">
             <div>
-              <label className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3 block">Primary Font</label>
-              <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted mb-3 block">Primary Font</label>
+              <div className="flex items-center justify-between p-4 bg-[var(--glass-bg)] rounded-xl border border-dim">
                 <span className="text-xl font-bold">Inter</span>
                 <span className="text-xs text-indigo-400 font-bold uppercase tracking-widest">Default</span>
               </div>
             </div>
             <div>
-              <label className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3 block">Display Font</label>
-              <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted mb-3 block">Display Font</label>
+              <div className="flex items-center justify-between p-4 bg-[var(--glass-bg)] rounded-xl border border-dim">
                 <span className="text-xl font-extrabold tracking-tight">Inter Bold</span>
-                <button className="text-xs text-white/40 hover:text-white transition-colors">Change</button>
+                <button className="text-xs text-muted hover:text-white transition-colors">Change</button>
               </div>
             </div>
           </div>

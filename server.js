@@ -126,7 +126,11 @@ function getContextualImage(keywords, id) {
     if (id && CAMPAIGN_FALLBACKS[id]) return CAMPAIGN_FALLBACKS[id];
     const lk = (keywords || '').toLowerCase();
     const match = Object.keys(IMAGE_FALLBACKS).find(k => lk.includes(k));
-    return IMAGE_FALLBACKS[match] || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=768&h=1024&q=85';
+    if (IMAGE_FALLBACKS[match]) return IMAGE_FALLBACKS[match];
+    
+    // Dynamic Unsplash fallback
+    const query = encodeURIComponent(lk.split(',')[0] || 'lifestyle');
+    return `https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=768&h=1024&q=85&keywords=${query}`;
 }
 
 // ── VIDEO FALLBACK map (tested working URLs only) ────────────────────────
@@ -351,7 +355,7 @@ OUTPUT ONLY the comma-separated keywords (MAX 60 words). No sentences, no preamb
             console.log('🎨 Generating image via Pollinations AI...');
             const seed = Math.floor(Math.random() * 9_999_999);
             const encodedPrompt = encodeURIComponent(detailedPrompt.substring(0, 1000));
-            const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${seed}&nologo=true`;
+            const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${seed}&nologo=true&model=flux`;
 
             try {
                 const imgRes = await fetch(pollinationsUrl);
@@ -610,7 +614,7 @@ app.get('/api/campaign-image/:id', async (req, res) => {
         // Try Pollinations
         if (!imageUrl) {
             const seed = Math.floor(Math.random() * 9_999_999);
-            const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
+            const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true&model=flux`;
             try {
                 // Add short timeout for pollinations to avoid hanging
                 const controller = new AbortController();

@@ -86,7 +86,7 @@ export const Templates = ({ onUseStyle }: TemplatesProps) => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center mb-12">
         <span className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-3 block">Templates</span>
         <h1 className="text-5xl font-extrabold mb-4">UGC Style Templates</h1>
-        <p className="text-white/50 max-w-2xl mx-auto">
+        <p className="text-secondary max-w-2xl mx-auto">
           Pick a proven style template. Upload your photo + product and get instant AI-generated UGC.
         </p>
       </motion.div>
@@ -99,7 +99,7 @@ export const Templates = ({ onUseStyle }: TemplatesProps) => {
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border ${selectedCategory === cat
               ? 'bg-indigo-600 border-indigo-500 text-white'
-              : 'bg-white/5 border-white/10 text-white/50 hover:text-white hover:border-white/20'
+              : 'bg-[var(--glass-bg)] border-dim text-secondary hover:text-white hover:border-white/20'
               }`}
           >
             {cat}
@@ -114,7 +114,7 @@ export const Templates = ({ onUseStyle }: TemplatesProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
-            className="glass-card overflow-hidden group cursor-pointer hover:border-white/20 transition-all border-white/5 flex flex-col"
+            className="glass-card overflow-hidden group cursor-pointer hover:border-white/20 transition-all border-dim flex flex-col"
           >
             {/* Preview Image */}
             <div className="relative aspect-[3/4] overflow-hidden">
@@ -126,7 +126,7 @@ export const Templates = ({ onUseStyle }: TemplatesProps) => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
               <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
                 {template.tags.map(tag => (
-                  <span key={tag} className="text-[9px] font-bold bg-black/50 backdrop-blur-md text-white/70 px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider">
+                  <span key={tag} className="text-[9px] font-bold bg-black/50 backdrop-blur-md text-white/70 px-2 py-0.5 rounded-full border border-dim uppercase tracking-wider">
                     {tag}
                   </span>
                 ))}
@@ -144,7 +144,7 @@ export const Templates = ({ onUseStyle }: TemplatesProps) => {
                 </div>
                 <h3 className="font-black text-sm">{template.title}</h3>
               </div>
-              <p className="text-white/40 text-xs leading-relaxed mb-4 flex-grow">{template.description}</p>
+              <p className="text-muted text-xs leading-relaxed mb-4 flex-grow">{template.description}</p>
               <button
                 onClick={() => onUseStyle(template.prompt)}
                 className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-black transition-all group-hover:shadow-lg group-hover:shadow-indigo-500/20"

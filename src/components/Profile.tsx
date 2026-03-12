@@ -53,23 +53,23 @@ export const Profile = ({ user, onNavigate }: ProfileProps) => {
                     >
                         <div className="relative w-24 h-24 mx-auto mb-4">
                             {user.photoURL ? (
-                                <img src={user.photoURL} alt="" className="w-full h-full rounded-3xl object-cover border-4 border-white/10" />
+                                <img src={user.photoURL} alt="" className="w-full h-full rounded-3xl object-cover border-4 border-dim" />
                             ) : (
-                                <div className="w-full h-full rounded-3xl bg-indigo-600 flex items-center justify-center border-4 border-white/10">
+                                <div className="w-full h-full rounded-3xl bg-indigo-600 flex items-center justify-center border-4 border-dim">
                                     <Sparkles className="w-10 h-10 text-white" />
                                 </div>
                             )}
-                            <div className="absolute -bottom-2 -right-2 bg-indigo-500 p-2 rounded-xl border-4 border-black">
+                            <div className="absolute -bottom-2 -right-2 bg-indigo-500 p-2 rounded-xl border-4 border-[var(--app-bg)]">
                                 <Shield className="w-4 h-4 text-white" />
                             </div>
                         </div>
                         <h2 className="text-xl font-bold mb-1">{user.displayName}</h2>
-                        <p className="text-sm text-white/50 mb-6">{user.email}</p>
+                        <p className="text-sm text-muted mb-6">{user.email}</p>
 
                         <div className="flex flex-col gap-2">
                             <button
                                 onClick={() => logOut()}
-                                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-white/5 hover:bg-red-500/10 hover:text-red-400 transition-all text-sm font-medium border border-white/5 hover:border-red-500/20"
+                                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[var(--glass-bg)] hover:bg-red-500/10 hover:text-red-400 transition-all text-sm font-medium border border-dim hover:border-red-500/20"
                             >
                                 <LogOut className="w-4 h-4" />
                                 Sign Out
@@ -83,7 +83,7 @@ export const Profile = ({ user, onNavigate }: ProfileProps) => {
                         transition={{ delay: 0.1 }}
                         className="glass-card p-6"
                     >
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-white/30 mb-4">Quick Links</h3>
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-muted mb-4">Quick Links</h3>
                         <nav className="space-y-2">
                             <button className="flex items-center gap-3 w-full p-3 rounded-xl bg-indigo-500/10 text-indigo-400 text-sm font-bold">
                                 <History className="w-4 h-4" />
@@ -91,12 +91,12 @@ export const Profile = ({ user, onNavigate }: ProfileProps) => {
                             </button>
                             <button
                                 onClick={() => onNavigate('plans')}
-                                className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-white/60 hover:text-white transition-all text-sm font-medium"
+                                className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-[var(--glass-bg)] text-secondary hover:text-primary transition-all text-sm font-medium"
                             >
                                 <Zap className="w-4 h-4" />
                                 Subscription Plans
                             </button>
-                            <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white/5 text-white/60 hover:text-white transition-all text-sm font-medium">
+                            <button className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-[var(--glass-bg)] text-secondary hover:text-primary transition-all text-sm font-medium">
                                 <Settings className="w-4 h-4" />
                                 Account Settings
                             </button>
@@ -113,7 +113,7 @@ export const Profile = ({ user, onNavigate }: ProfileProps) => {
                     >
                         <div>
                             <h1 className="text-3xl font-extrabold mb-2">My Creations</h1>
-                            <p className="text-white/40 text-sm">Review and manage your AI generations</p>
+                            <p className="text-muted text-sm">Review and manage your AI generations</p>
                         </div>
                     </motion.div>
 
@@ -130,16 +130,16 @@ export const Profile = ({ user, onNavigate }: ProfileProps) => {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: i * 0.05 }}
-                                    className="glass-card overflow-hidden group border border-white/5"
+                                    className="glass-card overflow-hidden group border border-dim"
                                 >
                                     <div className="aspect-square relative overflow-hidden">
                                         <img src={item.imageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                     </div>
                                     <div className="p-4">
-                                        <p className="text-xs text-white/60 line-clamp-2 italic mb-2">"{item.prompt}"</p>
+                                        <p className="text-xs text-secondary line-clamp-2 italic mb-2">"{item.prompt}"</p>
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] text-white/30 font-mono">
+                                            <span className="text-[10px] text-muted font-mono">
                                                 {new Date(item.timestamp).toLocaleDateString()}
                                             </span>
                                             <button className="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
@@ -154,7 +154,7 @@ export const Profile = ({ user, onNavigate }: ProfileProps) => {
                         <div className="glass-card p-12 text-center">
                             <Sparkles className="w-12 h-12 mx-auto mb-4 text-white/10" />
                             <h3 className="text-xl font-bold mb-2">No creations yet</h3>
-                            <p className="text-white/40 mb-8 max-w-sm mx-auto text-sm">
+                            <p className="text-muted mb-8 max-w-sm mx-auto text-sm">
                                 Start transforming your products into high-converting UGC ads today!
                             </p>
                             <button

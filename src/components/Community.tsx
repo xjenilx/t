@@ -40,7 +40,7 @@ export const Community = ({ onRemix }: CommunityProps) => {
         className="mb-12"
       >
         <h1 className="text-4xl font-extrabold mb-4">Community</h1>
-        <p className="text-white/60">See what others are creating with MAKE UGCAD</p>
+        <p className="text-secondary">See what others are creating with MAKE UGCAD</p>
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -50,7 +50,7 @@ export const Community = ({ onRemix }: CommunityProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: i * 0.1 }}
-            className="group relative aspect-[3/4] rounded-3xl overflow-hidden border border-white/10"
+            className="group relative aspect-[3/4] rounded-3xl overflow-hidden border border-dim"
           >
             <img
               src={item.imageUrl}
@@ -70,20 +70,20 @@ export const Community = ({ onRemix }: CommunityProps) => {
               <div className="flex flex-col items-center gap-1">
                 <button
                   onClick={() => toggleLike(item.id)}
-                  className={`p-2 rounded-xl backdrop-blur-md border transition-all ${likedItems.includes(item.id) ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/10 text-white/60 hover:text-white'
+                  className={`p-2 rounded-xl backdrop-blur-md border transition-all ${likedItems.includes(item.id) ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-dim text-secondary hover:text-white'
                     }`}
                 >
                   <Heart className={`w-5 h-5 ${likedItems.includes(item.id) ? 'fill-current' : ''}`} />
                 </button>
-                <span className="text-[10px] font-bold text-white/60">{item.likes || 0}</span>
+                <span className="text-[10px] font-bold text-secondary">{item.likes || 0}</span>
               </div>
-              <button className="p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 text-white/60 hover:text-white transition-all">
+              <button className="p-2 rounded-xl bg-black/40 backdrop-blur-md border border-dim text-secondary hover:text-white transition-all">
                 <Share2 className="w-5 h-5" />
               </button>
             </div>
 
             <div className="absolute bottom-6 left-6 right-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-              <p className="text-xs text-white/80 mb-4 line-clamp-3 font-medium bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/10">{item.prompt}</p>
+              <p className="text-xs text-primary mb-4 line-clamp-3 font-medium bg-black/40 backdrop-blur-md p-3 rounded-xl border border-dim">{item.prompt}</p>
               <button
                 onClick={() => onRemix(item.prompt)}
                 className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/20"

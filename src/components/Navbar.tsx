@@ -42,7 +42,7 @@ export const Navbar = ({ currentPage, onNavigate, user, theme, onToggleTheme }: 
 
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-      <div className="glass-card px-6 py-3 flex items-center justify-between">
+      <div className="glass-card px-6 py-3 flex items-center justify-between border-slate-200/50 dark:border-white/10 shadow-premium">
         <div
           className="cursor-pointer"
           onClick={() => onNavigate('home')}
@@ -55,7 +55,7 @@ export const Navbar = ({ currentPage, onNavigate, user, theme, onToggleTheme }: 
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`text-sm font-medium transition-colors hover:text-white ${currentPage === item.id ? 'text-white' : 'text-white/60'
+              className={`text-sm font-medium transition-colors hover:text-primary ${currentPage === item.id ? 'text-primary' : 'text-muted'
                 }`}
             >
               {item.label}
@@ -66,7 +66,7 @@ export const Navbar = ({ currentPage, onNavigate, user, theme, onToggleTheme }: 
         <div className="flex items-center gap-4">
           <button
             onClick={onToggleTheme}
-            className="p-2 text-white/60 hover:text-white transition-all transform hover:scale-110"
+            className="p-2 text-muted hover:text-primary transition-all transform hover:scale-110"
             title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
             {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
@@ -76,10 +76,10 @@ export const Navbar = ({ currentPage, onNavigate, user, theme, onToggleTheme }: 
             <div className="flex items-center gap-4">
               <button
                 onClick={() => onNavigate('profile')}
-                className={`flex items-center gap-2 transition-all ${currentPage === 'profile' ? 'text-white' : 'text-white/60 hover:text-white'}`}
+                className={`flex items-center gap-2 transition-all ${currentPage === 'profile' ? 'text-primary' : 'text-muted hover:text-primary'}`}
               >
                 {user.photoURL ? (
-                  <img src={user.photoURL} alt={user.displayName || ''} className={`w-8 h-8 rounded-full border ${currentPage === 'profile' ? 'border-indigo-500 shadow-lg shadow-indigo-500/20' : 'border-white/10'}`} />
+                  <img src={user.photoURL} alt={user.displayName || ''} className={`w-8 h-8 rounded-full border shadow-sm ${currentPage === 'profile' ? 'border-indigo-500 shadow-lg shadow-indigo-500/20' : 'border-dim'}`} />
                 ) : (
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentPage === 'profile' ? 'bg-indigo-600' : 'bg-white/10'}`}>
                     <UserIcon className="w-4 h-4 text-white" />
@@ -89,7 +89,7 @@ export const Navbar = ({ currentPage, onNavigate, user, theme, onToggleTheme }: 
               </button>
               <button
                 onClick={handleSignOut}
-                className="p-2 text-white/60 hover:text-white transition-colors"
+                className="p-2 text-muted hover:text-primary transition-colors"
                 title="Sign Out"
               >
                 <LogOut className="w-5 h-5" />
@@ -99,7 +99,7 @@ export const Navbar = ({ currentPage, onNavigate, user, theme, onToggleTheme }: 
             <>
               <button
                 onClick={() => onNavigate('signin')}
-                className="hidden sm:block text-sm font-medium text-white/80 hover:text-white transition-colors"
+                className="hidden sm:block text-sm font-medium text-secondary hover:text-primary transition-colors"
               >
                 Sign in
               </button>

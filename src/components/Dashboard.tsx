@@ -39,7 +39,7 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
         <div className="glass-card p-12 max-w-md w-full">
           <Sparkles className="w-12 h-12 text-indigo-400 mx-auto mb-6 opacity-60" />
           <h2 className="text-2xl font-bold mb-3">Sign in to access Dashboard</h2>
-          <p className="text-white/40 mb-6 text-sm">Track your generations, stats, and manage projects.</p>
+          <p className="text-muted mb-6 text-sm">Track your generations, stats, and manage projects.</p>
           <button onClick={() => onNavigate('signin')} className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-2xl font-bold transition-all">
             Sign In
           </button>
@@ -56,7 +56,7 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
           <h1 className="text-4xl font-extrabold mb-2">
             Welcome back, <span className="text-indigo-400">{user.displayName?.split(' ')[0] || 'Creator'}</span>!
           </h1>
-          <p className="text-white/50">Here's your UGC creation overview.</p>
+          <p className="text-secondary">Here's your UGC creation overview.</p>
         </div>
         <button
           onClick={() => onNavigate('create')}
@@ -80,8 +80,8 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
               <stat.icon className={`w-5 h-5 ${stat.color}`} />
             </div>
             <p className="text-3xl font-black mb-1">{stat.value}</p>
-            <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-1">{stat.label}</p>
-            <p className="text-xs text-white/30">{stat.delta}</p>
+            <p className="text-xs font-bold text-muted uppercase tracking-widest mb-1">{stat.label}</p>
+            <p className="text-xs text-muted">{stat.delta}</p>
           </motion.div>
         ))}
       </div>
@@ -105,7 +105,7 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
                 <ImageIcon className="w-10 h-10 text-indigo-400/40" />
               </div>
               <h3 className="font-bold text-lg mb-2">No generations yet</h3>
-              <p className="text-white/40 mb-6 text-sm max-w-xs mx-auto">Create your first UGC ad by uploading your photo and product.</p>
+              <p className="text-muted mb-6 text-sm max-w-xs mx-auto">Create your first UGC ad by uploading your photo and product.</p>
               <button
                 onClick={() => onNavigate('create')}
                 className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-2xl font-bold text-sm transition-all shadow-lg shadow-indigo-500/20"
@@ -121,14 +121,14 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.05 }}
-                  className="glass-card overflow-hidden group border-white/5"
+                  className="glass-card overflow-hidden group border-dim"
                 >
                   <div className="aspect-[4/3] relative overflow-hidden">
                     <img src={gen.imageUrl} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
                       <button
                         onClick={() => onNavigate('create')}
-                        className="text-[10px] bg-white text-black font-black px-3 py-1.5 rounded-lg"
+                        className="text-[10px] bg-white text-black font-black px-3 py-1.5 rounded-lg shadow-xl"
                       >
                         Remix This
                       </button>
@@ -140,9 +140,9 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
                     )}
                   </div>
                   <div className="p-3">
-                    <p className="text-xs text-white/70 line-clamp-1 mb-1.5">"{gen.prompt}"</p>
+                    <p className="text-xs text-secondary/80 line-clamp-1 mb-1.5">"{gen.prompt}"</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-white/30 font-mono flex items-center gap-1">
+                      <span className="text-[9px] text-muted font-mono flex items-center gap-1">
                         <Clock className="w-2.5 h-2.5" /> {new Date(gen.timestamp).toLocaleDateString()}
                       </span>
                       {gen.likes !== undefined && gen.likes > 0 && (
@@ -175,19 +175,19 @@ export const Dashboard = ({ user, generations, onNavigate }: DashboardProps) => 
               </div>
               <div className="flex-grow">
                 <p className="font-bold text-sm">{action.label}</p>
-                <p className="text-xs text-white/40">{action.desc}</p>
+                <p className="text-xs text-muted">{action.desc}</p>
               </div>
-              <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-white/60 transition-colors" />
+              <ArrowUpRight className="w-4 h-4 text-muted/40 group-hover:text-white/60 transition-colors" />
             </button>
           ))}
 
           {/* Plan card */}
-          <div className="glass-card p-5 border-indigo-500/20 bg-indigo-500/5">
-            <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Current Plan</p>
+          <div className="glass-card p-5 border-indigo-500/20 bg-indigo-500/5 dark:bg-indigo-500/10 shadow-premium">
+            <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-2">Current Plan</p>
             <p className="font-black text-lg mb-1">{profile?.tier ?? 'Loading...'}</p>
-            <p className="text-xs text-white/40 mb-4">{profile?.credits ?? '...'} credits remaining</p>
-            <div className="w-full bg-white/10 rounded-full h-1.5 mb-4">
-              <div className="bg-indigo-500 h-full rounded-full" style={{ width: profile?.tier === 'Pro' ? '100%' : `${(profile?.credits || 0)}%` }} />
+            <p className="text-xs text-muted mb-4">{profile?.credits ?? '...'} credits remaining</p>
+            <div className="w-full bg-slate-200 dark:bg-white/10 rounded-full h-1.5 mb-4 overflow-hidden">
+              <div className="bg-indigo-600 dark:bg-indigo-500 h-full rounded-full" style={{ width: profile?.tier === 'Pro' ? '100%' : `${(profile?.credits || 0)}%` }} />
             </div>
             <button
               onClick={() => onNavigate('plans')}

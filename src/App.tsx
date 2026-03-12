@@ -139,9 +139,9 @@ export default function App() {
         {renderPage()}
       </main>
 
-      <footer className="py-12 px-6 text-center opacity-40 text-sm border-t border-white/5 mt-20">
-        <p className="mb-2">© 2024 MAKE UGCAD. All rights reserved.</p>
-        <p className="font-mono text-[10px] opacity-50">Deployed at: <a href={typeof window !== 'undefined' ? window.location.origin : '#'} className="hover:text-indigo-400 transition-colors">{typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'}</a></p>
+      <footer className="py-12 px-6 text-center text-muted text-sm border-t border-dim mt-20">
+        <p className="mb-1 font-semibold tracking-wide">© 2026 MAKE UGCAD. All rights reserved.</p>
+        <p className="opacity-60 text-xs">made by SUJAL and MANGESH</p>
       </footer>
     </div>
   );

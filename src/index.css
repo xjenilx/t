@@ -1,48 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  
-  --color-brand-purple: #6366f1;
-  --color-brand-purple-dark: #4f46e5;
-}
-
 :root {
-  --app-bg: #050505;
-  --app-text: #ffffff;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Default: Dark Theme (RGB for opacity support) */
+  --app-bg-rgb: 5, 5, 5;
+  --app-bg: rgb(var(--app-bg-rgb));
+  --app-text-rgb: 255, 255, 255;
+  --app-text: rgb(var(--app-text-rgb));
+
+  --text-primary-rgb: 255, 255, 255;
+  --text-primary: rgb(var(--text-primary-rgb));
+
+  --text-secondary-rgb: 212, 212, 216;
+  --text-secondary: rgb(var(--text-secondary-rgb));
+
+  --text-muted-rgb: 161, 161, 170;
+  --text-muted: rgb(var(--text-muted-rgb));
+
   --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-text-muted: rgba(255, 255, 255, 0.6);
+  --border-dim: rgba(255, 255, 255, 0.1);
   --accent: #6366f1;
+  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="light"] {
-  --app-bg: #f8fafc;
-  --app-text: #0f172a;
-  --glass-bg: rgba(0, 0, 0, 0.03);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-text-muted: rgba(0, 0, 0, 0.6);
+  --app-bg-rgb: 252, 252, 255;
+  --app-bg: rgb(var(--app-bg-rgb));
+  --app-text-rgb: 15, 23, 42;
+  --app-text: rgb(var(--app-text-rgb));
+
+  --text-primary-rgb: 15, 23, 42;
+  --text-primary: rgb(var(--text-primary-rgb));
+
+  --text-secondary-rgb: 51, 65, 85;
+  --text-secondary: rgb(var(--text-secondary-rgb));
+
+  --text-muted-rgb: 71, 85, 105;
+  --text-muted: rgb(var(--text-muted-rgb));
+
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(15, 23, 42, 0.12);
+  --border-dim: rgba(15, 23, 42, 0.12);
   --accent: #4f46e5;
+  --shadow-premium: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
 }
 
 @layer base {
   body {
     background-color: var(--app-bg);
     color: var(--app-text);
-    @apply font-sans antialiased selection:bg-indigo-500/30;
+    font-family: var(--font-sans);
+    @apply antialiased selection:bg-indigo-500/30;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer utilities {
+  .text-primary {
+    color: var(--text-primary) !important;
+  }
+
+  .text-secondary {
+    color: var(--text-secondary) !important;
+  }
+
+  .text-muted {
+    color: var(--text-muted) !important;
+  }
+
+  .border-dim {
+    border-color: var(--border-dim) !important;
+  }
+
+  .shadow-premium {
+    box-shadow: var(--shadow-premium);
   }
 }
 
 .glass-card {
   background-color: var(--glass-bg);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
   border-radius: 2rem;
+  box-shadow: var(--shadow-premium);
+  transition: all 0.3s ease;
 }
 
 .purple-gradient {
-  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 40%),
-              radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.1), transparent 40%);
+  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.12), transparent 45%),
+    radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.08), transparent 45%);
+}
+
+[data-theme="light"] .purple-gradient {
+  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.06), transparent 45%),
+    radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.04), transparent 45%);
 }
